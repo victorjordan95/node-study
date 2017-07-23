@@ -1,14 +1,15 @@
 module.exports = function(app){
-    app.get('/produtos', function(req,res){
-        
+   app.get('/produtos',function(req,res){
         var connection = app.infra.connectionFactory();
-        
-        connection.query('select * from produtos',function(err,results){
-            res.render('produtos/lista',{lista:results});
+        var produtosBanco = new app.infra.ProdutosDAO(connection);
 
-        });
+        produtosBanco.lista(function(erros,resultados){
+            res.render('produtos/lista',{lista:resultados});
+            });
+
 
         connection.end();
 
     });
+
 }
